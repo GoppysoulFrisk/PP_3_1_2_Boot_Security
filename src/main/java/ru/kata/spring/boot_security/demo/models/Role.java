@@ -39,12 +39,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Objects;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name= "roles")
 public class Role implements GrantedAuthority {
 
@@ -54,9 +54,12 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
-
     @Override
     public String getAuthority() {
         return name;
+    }
+
+    Role(String name) {
+        this.name = name;
     }
 }

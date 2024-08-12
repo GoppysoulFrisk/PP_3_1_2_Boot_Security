@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.Services.RoleService;
 import ru.kata.spring.boot_security.demo.Services.UserService;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.models.UserInfo;
 
 import javax.management.relation.RoleNotFoundException;
 import java.util.List;
@@ -59,16 +58,16 @@ public class SetupDataLoader implements
 
 
         User adminUser = userService.findByUsername("admin").orElseGet(() -> {
-            User newAdmin = new User("admin", new UserInfo("admin@test.com", "adminphone"));
+            User newAdmin = new User("admin");
             newAdmin.addRole(roles.get(0));
             newAdmin.setPassword(passwordEncoder.encode("admin"));
             return newAdmin;
         });
 
         User regularUser = userService.findByUsername("user").orElseGet(() -> {
-            User newUser =  new User("user", new UserInfo("user@test.com", "userphone"));
+            User newUser =  new User("user");
             newUser.addRole(roles.get(1));
-            newUser.setPassword(passwordEncoder.encode("admin"));
+            newUser.setPassword(passwordEncoder.encode("user"));
             return newUser;
         });
 

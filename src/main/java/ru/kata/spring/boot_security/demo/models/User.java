@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,19 +37,20 @@ public class User implements UserDetails, Serializable {
 
     private String password;
 
-    @Embedded
-    private UserInfo userInfo;
+    private String email;
+
+    private String phone;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
 
-    public User(String admin, UserInfo userInfo) {
-        this.username = admin;
-        this.userInfo = userInfo;
+    public User(String username) {
+        this.username = username;
     }
 
     public void addRole(Role role) {
-        this.roles.add(role);
+        HashSet<Role> Roles = new HashSet<>(getRoles());
+        Roles.add(role);
     }
 
     @Override
