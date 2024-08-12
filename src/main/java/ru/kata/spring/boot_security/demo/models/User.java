@@ -6,6 +6,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -42,6 +44,11 @@ public class User implements UserDetails, Serializable {
     private String phone;
 
     @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "user_roles", // Имя промежуточной таблицы
+//            joinColumns = @JoinColumn(name = "user_id"), // Колонка для user
+//            inverseJoinColumns = @JoinColumn(name = "role_id") // Колонка для role
+//    )
     private Set<Role> roles = new HashSet<>();
 
     public User(String username) {
@@ -49,8 +56,7 @@ public class User implements UserDetails, Serializable {
     }
 
     public void addRole(Role role) {
-        HashSet<Role> Roles = new HashSet<>(getRoles());
-        Roles.add(role);
+        this.roles.add(role);
     }
 
     @Override

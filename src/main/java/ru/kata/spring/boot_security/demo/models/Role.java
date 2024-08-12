@@ -45,7 +45,7 @@ import org.springframework.security.core.GrantedAuthority;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name= "roles")
+@Table(name= "role")
 public class Role implements GrantedAuthority {
 
     @Id
@@ -57,9 +57,5 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return name;
-    }
-
-    Role(String name) {
-        this.name = name;
     }
 }

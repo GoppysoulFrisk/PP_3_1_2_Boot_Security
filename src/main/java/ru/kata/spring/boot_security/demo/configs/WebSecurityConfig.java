@@ -44,7 +44,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/index").permitAll()
                         .requestMatchers("user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN"))
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .formLogin(form -> form
+                .successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
                 .build();
     }
 

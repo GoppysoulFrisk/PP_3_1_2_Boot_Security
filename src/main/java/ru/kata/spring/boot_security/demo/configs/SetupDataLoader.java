@@ -60,6 +60,7 @@ public class SetupDataLoader implements
         User adminUser = userService.findByUsername("admin").orElseGet(() -> {
             User newAdmin = new User("admin");
             newAdmin.addRole(roles.get(0));
+            newAdmin.addRole(roles.get(1));
             newAdmin.setPassword(passwordEncoder.encode("admin"));
             return newAdmin;
         });
