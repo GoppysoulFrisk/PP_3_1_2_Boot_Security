@@ -55,7 +55,7 @@ public class AdminController {
 //        }
         user.setRoles(roleIds.stream().map(roleService::findById).collect(Collectors.toSet()));
         userService.save(user);
-        return "redirect:admin/usersPage";
+        return "redirect:/admin";
     }
 
     @PostMapping("/delete")
@@ -63,18 +63,24 @@ public class AdminController {
         if (id > 0) {
             userService.delete(id);
         }
-        return "redirect:/usersPage";
+        return "redirect:/admin";
     }
 
     @GetMapping("/update")
     public String getUpdatePage(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
+        model.addAttribute("roles", roleService.findAll());
         return "admin/update";
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam(value = "roleIds", required = false) Set<Long> roleIds) {
+        user.setRoles(roleIds.stream().map(roleService::findById).collect(Collectors.toSet()));
+        user.setUsername(user.getUsername());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEmail(user.getEmail());
+        user.setPhone(user.getPhone());
         userService.update(user);
-        return "redirect:/usersPage";
+        return "redirect:/admin";
     }
 }

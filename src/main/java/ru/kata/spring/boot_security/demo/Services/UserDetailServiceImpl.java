@@ -20,7 +20,7 @@ public class UserDetailServiceImpl implements UserDetailsService, UserService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws RuntimeException {
         User user = userRepository.getUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Unknown user: "+username);
@@ -39,7 +39,7 @@ public class UserDetailServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("couldn't find user with id " + id));
     }
 
     @Override
@@ -58,8 +58,7 @@ public class UserDetailServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void delete(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("couldn't find user with id " + id));
-        userRepository.delete(user);
+        userRepository.deleteById(id);
     }
 
     @Override

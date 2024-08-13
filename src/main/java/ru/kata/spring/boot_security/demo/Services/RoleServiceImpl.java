@@ -43,4 +43,7 @@ public class RoleServiceImpl implements RoleService {
     public Role findById(Long id) {
         return roleRepository.findById(id).orElseThrow(() -> new RuntimeException("couldn't find user with id " + id));
     }
+    public void delete(Long id) {
+        roleRepository.deleteById(id);
+    }
 }
