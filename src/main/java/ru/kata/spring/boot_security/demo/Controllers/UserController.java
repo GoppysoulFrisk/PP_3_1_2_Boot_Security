@@ -22,6 +22,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping
+    public String makeHi() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/user")
     public String userPage(Model model, Principal principal) {
         String username = principal.getName();

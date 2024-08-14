@@ -34,6 +34,7 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @GetMapping()
     public String getAllUsersPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
