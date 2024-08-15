@@ -42,6 +42,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.stream.Collectors;
+
 @Data
 @Entity
 @Table(name= "role")
@@ -56,5 +58,10 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return name.replace("ROLE_", "");
     }
 }
