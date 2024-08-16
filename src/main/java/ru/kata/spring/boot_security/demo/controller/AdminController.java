@@ -75,8 +75,8 @@ public class AdminController {
         user.setUsername(newUserDetails.getUsername());
         user.setPassword(passwordEncoder.encode(newUserDetails.getPassword()));
         user.setEmail(newUserDetails.getEmail());
-        newUserDetails.setPhone(newUserDetails.getPhone());
-        userService.update(newUserDetails);
+        user.setPhone(newUserDetails.getPhone());
+        userService.update(user);
         return "redirect:/admin";
     }
 }
