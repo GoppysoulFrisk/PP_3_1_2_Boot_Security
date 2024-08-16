@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.models;
+package ru.kata.spring.boot_security.demo.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
