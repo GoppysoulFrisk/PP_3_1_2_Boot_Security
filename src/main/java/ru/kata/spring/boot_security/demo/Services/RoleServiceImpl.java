@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.Repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.exception.RoleNotFoundException;
 import ru.kata.spring.boot_security.demo.models.Role;
-
-import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 @Service
@@ -21,12 +20,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(noRollbackFor = RoleNotFoundException.class)
     public Role findByName(String name) throws RoleNotFoundException {
-        Role role = roleRepository.findByName(name);
-        if (role == null) {
-            throw new RoleNotFoundException();
-        }
-        return roleRepository.findByName(name);
+        return roleRepository.findByName(name).orElseThrow(() -> new RoleNotFoundException("Role "+name+" not found"));
     }
 
     @Override
@@ -40,8 +36,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role findById(Long id) {
-        return roleRepository.findById(id).orElseThrow(() -> new RuntimeException("couldn't find user with id " + id));
+    @Transactional(noRollbackFor = RoleNotFoundException.class)
+    public Role findById(Long id) throws RoleNotFoundException {
+        return roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException("Role with id "+ id +" not found"));
     }
     public void delete(Long id) {
         roleRepository.deleteById(id);

@@ -1,12 +1,9 @@
 package ru.kata.spring.boot_security.demo.Controllers;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.kata.spring.boot_security.demo.Services.UserDetailServiceImpl;
 import ru.kata.spring.boot_security.demo.Services.UserService;
 import ru.kata.spring.boot_security.demo.models.User;
 
@@ -31,7 +28,7 @@ public class UserController {
     public String userPage(Model model, Principal principal) {
         String username = principal.getName();
 
-        User user = userService.findByUsername(username).orElse(null);
+        User user = userService.findByUsername(username);
         model.addAttribute("user", user);
         return "user";
     }

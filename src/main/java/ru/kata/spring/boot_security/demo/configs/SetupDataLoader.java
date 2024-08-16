@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.Services.RoleService;
 import ru.kata.spring.boot_security.demo.Services.UserService;
+import ru.kata.spring.boot_security.demo.exception.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
@@ -46,6 +47,24 @@ public class SetupDataLoader implements
     }
 
     @Transactional
+    public User createUserIfNotFound(String userStr, List<Role> roles) {
+        try {
+            User user = userService.findByUsername(userStr);
+            return user;
+        } catch (UserNotFoundException e) {
+            User newUser = new User(userStr);
+            newUser.setPassword(passwordEncoder.encode(userStr));
+            if (userStr.equals("admin")) {
+                newUser.addRole(roles.get(0));
+                newUser.addRole(roles.get(1));
+            } else if (userStr.equals("user")) {
+                newUser.addRole(roles.get(1));
+            }
+            return newUser;
+        }
+    }
+
+    @Transactional
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
@@ -53,26 +72,10 @@ public class SetupDataLoader implements
             return;
         }
 
-        //create user and admin roles if they don't exist and save them
         List<Role> roles = Stream.of("ROLE_ADMIN", "ROLE_USER").map(this::createRoleIfNotFound).toList();
+        List<User> users = Stream.of("admin", "user").map(userStr -> createUserIfNotFound(userStr, roles)).toList();
 
-
-        User adminUser = userService.findByUsername("admin").orElseGet(() -> {
-            User newAdmin = new User("admin");
-            newAdmin.addRole(roles.get(0));
-            newAdmin.addRole(roles.get(1));
-            newAdmin.setPassword(passwordEncoder.encode("admin"));
-            return newAdmin;
-        });
-
-        User regularUser = userService.findByUsername("user").orElseGet(() -> {
-            User newUser =  new User("user");
-            newUser.addRole(roles.get(1));
-            newUser.setPassword(passwordEncoder.encode("user"));
-            return newUser;
-        });
-
-        userService.saveAll(List.of(adminUser, regularUser));
+        userService.saveAll(users);
 
         alreadySetup = true;
     }

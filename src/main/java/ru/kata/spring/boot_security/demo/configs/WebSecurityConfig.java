@@ -6,13 +6,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.kata.spring.boot_security.demo.Services.UserDetailServiceImpl;
+import ru.kata.spring.boot_security.demo.security.UserDetailServiceImpl;
+
 
 @Configuration
 @EnableWebSecurity
@@ -44,8 +44,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/index").permitAll()
                         .requestMatchers("user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN"))
-                .formLogin(form -> form
-                .successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
+                .formLogin(form -> form.successHandler(new SuccessUserHandler())
+                        .permitAll())// Установка кастомного обработчика
                 .build();
     }
 

@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.Services.RoleService;
 import ru.kata.spring.boot_security.demo.Services.UserService;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,9 +58,7 @@ public class AdminController {
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
-        if (id > 0) {
             userService.delete(id);
-        }
         return "redirect:/admin";
     }
 
@@ -75,13 +70,14 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam(value = "roleIds", required = false) Set<Long> roleIds) {
+    public String updateUser(@ModelAttribute("user") User newUserDetails, @RequestParam(value = "roleIds", required = false) Set<Long> roleIds) {
+        User user = userService.findById(newUserDetails.getId());
         user.setRoles(roleIds.stream().map(roleService::findById).collect(Collectors.toSet()));
-        user.setUsername(user.getUsername());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEmail(user.getEmail());
-        user.setPhone(user.getPhone());
-        userService.update(user);
+        user.setUsername(newUserDetails.getUsername());
+        user.setPassword(passwordEncoder.encode(newUserDetails.getPassword()));
+        user.setEmail(newUserDetails.getEmail());
+        newUserDetails.setPhone(newUserDetails.getPhone());
+        userService.update(newUserDetails);
         return "redirect:/admin";
     }
 }
