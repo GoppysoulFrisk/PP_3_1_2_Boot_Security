@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -61,19 +62,13 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/update")
-    public String getUpdatePage(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        model.addAttribute("roles", roleService.findAll());
-        return "admin/update";
-    }
-
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User newUserDetails, @RequestParam(value = "roleIds", required = false) Set<Long> roleIds) {
         User user = userService.findById(newUserDetails.getId());
-        user.setRoles(roleIds.stream().map(roleService::findById).collect(Collectors.toSet()));
+        Set<Role> roles = roleIds.stream().map(roleService::findById).collect(Collectors.toSet());
+        user.setRoles(roles);
         user.setUsername(newUserDetails.getUsername());
-        user.setPassword(passwordEncoder.encode(newUserDetails.getPassword()));
+//        user.setPassword(passwordEncoder.encode(newUserDetails.getPassword()));
         user.setEmail(newUserDetails.getEmail());
         user.setPhone(newUserDetails.getPhone());
         userService.update(user);

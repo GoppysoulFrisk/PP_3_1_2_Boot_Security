@@ -18,6 +18,10 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    @GetMapping()
+    public String makeHi() {
+        return "redirect:/login;";
+    }
 
     @GetMapping("/user")
     public String userPage(Model model, Principal principal) {

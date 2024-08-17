@@ -1,24 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/fragment/layout/base_layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Spring Security Example</title>
+    <title>User</title>
 </head>
 <body>
-<div class="container">
-    <h1>User, welcome spring boot security page!</h1>
-    <h2>Your Profile:</h2>
-    <div>
-        <h5>Username: <span th:text="${user.username}"></span></h5>
-        <p>Email: <span th:text="${user.email}"></span></p>
-        <p>Phone: <span th:text="${user.phone}"></span></p>
-        <p>Roles:
-        <ul>
-            <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
-        </ul>
-        </p>
+
+<div layout:fragment="content">
+    <h1 th:text="'User ' + ${user.getUsername()}"></h1>
+    <div class="card mt-3" >
+        <h5 class="card-header p-3">About user</h5>
+        <div class="card-body">
+            <table class="table table-striped border-top">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td  th:text="${user.getId()}"></td>
+                    <td  th:text="${user.getUsername()}"></td>
+                    <td  th:text="${user.getEmail()}"></td>
+                    <td  th:text="${user.getPhone()}"></td>
+                    <td  th:text="${@templatesUtil.getRolesStringFromAuthorities(user.getRoles())}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <a href="#" th:href="@{/logout}">Log Out</a>
 </div>
 </body>
 </html>
