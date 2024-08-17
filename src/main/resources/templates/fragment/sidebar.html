@@ -4,9 +4,11 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
+
 </head>
 <body>
-<nav class="col-md-2 p-0 pt-3 nav nav-pills flex-column mb-auto" >
+<nav class="col-md-1 p-0 pt-3 nav nav-pills flex-column bg-light" >
+<!--    <nav class="col-md-2 d-none d-md-block  sidebar">-->
 
     <a sec:authorize="hasRole('ADMIN')" href="/admin" class="nav-link" th:classappend="${currentPath == '/admin' ? 'active' : ''}" >
         Admin
