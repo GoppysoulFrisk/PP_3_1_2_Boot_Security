@@ -1,74 +1,66 @@
-<!--<!doctype html>-->
-<!--<html lang="en"-->
-<!--      xmlns="http://www.w3.org/1999/xhtml"-->
-<!--      xmlns:th="http://www.thymeleaf.org"-->
-<!--&gt;-->
-<!--<head>-->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"-->
-<!--          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">-->
-<!--    <title>Admin Panel</title>-->
-<!--</head>-->
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
 
-<!--<body>-->
+<div class="modal fade" th:id="deleteModal+${user.id}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" th:fragment="delete">
 
-<!--<div class="modal fade" th:id="deleteModal+${user.id}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" th:fragment="delete-modal">-->
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete user</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
-<!--            <div class="modal-header">-->
-<!--                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete user</h1>-->
-<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
+                <div class="d-flex justify-content-center text-center">
+                    <form th:method="POST" th:action="@{/admin/delete(id=${user.getId()})}" class="col-4" th:id="deleteForm+${user.id}">
+                        <div class="form-group mb-3" >
+                            <label for="deleteId" class="form-label fw-bold">ID</label>
+                            <input disabled type="text" class="form-control" id="deleteId" th:value="${user.id}" name="id"/>
+                        </div>
+                        <div class="form-group mb-3" >
+                            <label for="deleteUsername" class="form-label fw-bold">Username</label>
+                            <input disabled type="text" class="form-control" id="deleteUsername" th:value="${user.username}" name="username"/>
+                        </div>
 
-<!--                <div class="d-flex justify-content-center text-center">-->
-<!--                    <form th:method="POST" th:action="@{/admin/delete(id=${user.getId()})}" class="col-4" th:id="deleteForm+${user.id}">-->
-<!--                        <div class="form-group mb-3" >-->
-<!--                            <label for="deleteId" class="form-label fw-bold">ID</label>-->
-<!--                            <input disabled type="text" class="form-control" id="deleteId" th:value="${user.id}" name="id"/>-->
-<!--                        </div>-->
-<!--                        <div class="form-group mb-3" >-->
-<!--                            <label for="deleteUsername" class="form-label fw-bold">Username</label>-->
-<!--                            <input disabled type="text" class="form-control" id="deleteUsername" th:value="${user.username}" name="username"/>-->
-<!--                        </div>-->
+                        <div class="form-group mb-3">
+                            <label for="deletePassword" class="form-label fw-bold">Password</label>
+                            <input disabled type="text" class="form-control" id="deletePassword" th:value="${user.password}" name="password"/>
+                        </div>
 
-<!--                        <div class="form-group mb-3">-->
-<!--                            <label for="deletePassword" class="form-label fw-bold">Password</label>-->
-<!--                            <input disabled type="text" class="form-control" id="deletePassword" th:value="${user.password}" name="password"/>-->
-<!--                        </div>-->
+                        <div class="form-group mb-3">
+                            <label for="deleteEmail" class="form-label fw-bold">Email</label>
+                            <input disabled type="email" class="form-control"  id="deleteEmail" th:value="${user.email}" name="contactInfo.email"/>
+                        </div>
 
-<!--                        <div class="form-group mb-3">-->
-<!--                            <label for="deleteEmail" class="form-label fw-bold">Email</label>-->
-<!--                            <input disabled type="email" class="form-control"  id="deleteEmail" th:value="${user.email}" name="contactInfo.email"/>-->
-<!--                        </div>-->
+                        <div class="form-group mb-3">
+                            <label for="deletePhone" class="form-label fw-bold">Phone number</label>
+                            <input disabled type="text" class="form-control"  id="deletePhone" th:value="${user.phone}" name="contactInfo.phone"/>
+                        </div>
 
-<!--                        <div class="form-group mb-3">-->
-<!--                            <label for="deletePhone" class="form-label fw-bold">Phone number</label>-->
-<!--                            <input disabled type="text" class="form-control"  id="deletePhone" th:value="${user.phone}" name="contactInfo.phone"/>-->
-<!--                        </div>-->
+                        <div class="form-group mb-3">
+                            <label for="deleteRoles" class="form-label fw-bold">Roles:</label>
+                            <select disabled class="form-select" th:size="${#lists.size(roles)}" multiple aria-label="roles" name="roleIds" id="deleteRoles">
+                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${#lists.contains(user.getRoles(), role)}">role name</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
 
-<!--                        <div class="form-group mb-3">-->
-<!--                            <label for="deleteRoles" class="form-label fw-bold">Roles:</label>-->
-<!--                            <select disabled class="form-select" th:size="${#sets.size(roles)}" multiple aria-label="roles" name="roleIds" id="deleteRoles">-->
-<!--                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${#sets.contains(user.getRoles(), role)}">role name</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" th:form="deleteForm+${user.id}">Delete</button>
+            </div>
 
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                <button type="submit" class="btn btn-danger" th:form="deleteForm+${user.id}">Delete</button>-->
-<!--            </div>-->
+        </div>
+    </div>
+</div>
 
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>-->
-<!--</body>-->
-<!--</html>-->
+</body>
+</html>

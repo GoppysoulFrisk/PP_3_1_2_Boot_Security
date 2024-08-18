@@ -29,6 +29,7 @@ public class UserController {
         String username = principal.getName();
 
         User user = userService.findByUsername(username);
+        model.addAttribute("currentPath", "/user");
         model.addAttribute("user", user);
         return "user";
     }

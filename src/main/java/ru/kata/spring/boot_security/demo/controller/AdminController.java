@@ -34,6 +34,7 @@ public class AdminController {
 
     @GetMapping()
     public String getAllUsersPage(Model model) {
+        model.addAttribute("currentPath", "/admin");
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("newUser", new User());
         model.addAttribute("roles", roleService.findAll());
