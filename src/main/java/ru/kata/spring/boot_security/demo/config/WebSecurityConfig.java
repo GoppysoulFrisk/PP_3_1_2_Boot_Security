@@ -41,7 +41,7 @@ public class WebSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable/*csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()/*/)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/index").permitAll()
+                        .requestMatchers("/", "/test").permitAll()
                         .requestMatchers("user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN"))
                 .formLogin(form -> form.successHandler(new SuccessUserHandler())
