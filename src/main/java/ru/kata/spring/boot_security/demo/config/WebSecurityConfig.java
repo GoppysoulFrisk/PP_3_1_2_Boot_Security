@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import ru.kata.spring.boot_security.demo.security.UserDetailServiceImpl;
 
 
@@ -40,12 +41,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable/*csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()/*/)
+//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/test").permitAll()
+                        .requestMatchers("/", "/test","/static/**", "/js/**", "/css/**").permitAll()
                         .requestMatchers("user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN"))
-                .formLogin(form -> form.successHandler(new SuccessUserHandler())
-                        .permitAll())// Установка кастомного обработчика
+                .formLogin(form -> form.successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
                 .build();
     }
 

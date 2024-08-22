@@ -8,6 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,10 +36,15 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true)
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "too short or too long")
     private String username;
 
+    @NotEmpty(message = "Password should not be empty")
+    @Size(min = 2, max = 30, message = "too short or too long")
     private String password;
 
+    @Email
     private String email;
 
     private String phone;
