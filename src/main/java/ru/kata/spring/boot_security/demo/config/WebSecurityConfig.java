@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -44,9 +45,10 @@ public class WebSecurityConfig {
 //                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/test","/static/**", "/js/**", "/css/**").permitAll()
-                        .requestMatchers("user/**").authenticated()
+                        .requestMatchers("/api/v1/user").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN"))
-                .formLogin(form -> form.successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
+                .formLogin(form -> form.usernameParameter("username").successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 

@@ -22,7 +22,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(noRollbackFor = RoleNotFoundException.class)
     public Role findByName(String name) throws RoleNotFoundException {
-        return roleRepository.findByName(name).orElseThrow(() -> new RoleNotFoundException("Role "+name+" not found"));
+        return roleRepository.findByName(name).orElseThrow(() -> new RoleNotFoundException("Role " + name + " not found"));
     }
 
     @Override

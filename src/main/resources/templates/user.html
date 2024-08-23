@@ -44,11 +44,11 @@
 
 <!--        main-->
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <h1 th:text="'User ' + ${user.getUsername()}"></h1>
+            <h1 id="userMainHeading"></h1><!--<h1 th:text="'User ' + ${user.getUsername()}"></h1>-->
             <div class="card mt-3">
                 <h5 class="card-header p-3">About user</h5>
                 <div class="card-body">
-                    <table class="table table-striped border-top">
+                    <table class="table table-striped border-top" id="userTable"> <!---->
                         <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -60,14 +60,20 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td th:text="${user.getId()}"></td>
+                            <!--<td th:text="${user.getId()}"></td>
                             <td th:text="${user.getUsername()}"></td>
                             <td th:text="${user.getEmail()}"></td>
                             <td th:text="${user.getPhone()}"></td>
-                            <td th:text="${@templatesUtil.getRolesStringFromAuthorities(user.getRoles())}"></td>
+                            <td th:text="${@templatesUtil.getRolesStringFromAuthorities(user.getRoles())}"></td>-->
+                            <td id="idCell"></td>
+                            <td id="usernameCell"></td>
+                            <td id="emailCell"></td>
+                            <td id="phoneCell"></td>
+                            <td id="rolesCell"></td>
                         </tr>
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </main>

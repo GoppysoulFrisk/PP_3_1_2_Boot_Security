@@ -57,11 +57,11 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return name;
+        return name.replace("ROLE_", "");
     }
 
     @Override
     public String toString() {
-        return name.replace("ROLE_", "");
+        return name;
     }
 }

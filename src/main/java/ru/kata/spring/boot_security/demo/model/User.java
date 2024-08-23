@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private String username;
 
     @NotEmpty(message = "Password should not be empty")
-    @Size(min = 2, max = 30, message = "too short or too long")
+    @Size(min = 2, max = 200, message = "too short or too long")
     private String password;
 
     @Email

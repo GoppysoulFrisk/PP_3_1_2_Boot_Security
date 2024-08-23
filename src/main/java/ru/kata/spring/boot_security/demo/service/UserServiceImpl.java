@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
     public void saveAll(List<User> users) {
         userRepository.saveAll(users);
     }
+
     @Override
     public void update(User updatedUser) {
         userRepository.save(updatedUser);
@@ -43,7 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        if (id > 0) {
+
+        if (id != null && id > 0) {
             userRepository.deleteById(id);
         }
     }
@@ -51,6 +53,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(noRollbackFor = UserNotFoundException.class)
     public User findByUsername(String username) throws UserNotFoundException {
-        return userRepository.getUserByUsername(username).orElseThrow(() -> new UserNotFoundException("couldn't find user with username " +username));
+        return userRepository.getUserByUsername(username).orElseThrow(() -> new UserNotFoundException("couldn't find user with username " + username));
     }
 }
