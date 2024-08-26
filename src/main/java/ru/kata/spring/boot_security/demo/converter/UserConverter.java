@@ -29,7 +29,6 @@ public class UserConverter {
         userDTO.setEmail(user.getEmail());
         userDTO.setPhone(user.getPhone());
         userDTO.setRoles(user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet()));
-        System.out.println("ЭТО ВЫВОД userDTO ПОСЛЕ convertToDTO \n" + userDTO);
         return userDTO;
     }
 
@@ -55,7 +54,6 @@ public class UserConverter {
             Set<Role> roles = dto.getRoles().stream().map(roleService::findByName).collect(Collectors.toSet());
             user.setRoles(roles);
         }
-        System.out.println("ЭТО ВЫВОД userEntity ПОСЛЕ convertToEntity \n" + user);
         return user;
     }
 }

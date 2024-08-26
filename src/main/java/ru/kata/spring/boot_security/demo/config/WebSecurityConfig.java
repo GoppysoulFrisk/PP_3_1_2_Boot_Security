@@ -20,6 +20,12 @@ import ru.kata.spring.boot_security.demo.security.UserDetailServiceImpl;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    private final SuccessUserHandler successUserHandler;
+
+    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+        this.successUserHandler = successUserHandler;
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailServiceImpl();
@@ -38,18 +44,22 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder(5);
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(AbstractHttpConfigurer::disable/*csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()/*/)
-////                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-//                .authorizeHttpRequests(authz -> authz
-//                        .requestMatchers("/", "/test","/static/**", "/js/**", "/css/**").permitAll()
-//                        .requestMatchers("/api/v1/user").authenticated()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN"))
-//                .formLogin(form -> form.usernameParameter("username").successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
-//                .httpBasic(Customizer.withDefaults())
-//                .build();
-//    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .formLogin(login -> login
+                        .usernameParameter("username")
+                        .successHandler(successUserHandler)
+                        .permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/api/v1/users/*").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/v1/user").authenticated()
+                        .requestMatchers("/api/v1").authenticated()
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .logout(Customizer.withDefaults())
+                .build();
+    }
 
 }

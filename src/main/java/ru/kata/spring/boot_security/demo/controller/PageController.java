@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class PageController {
-//
-//    @GetMapping
-//    public String makeHi() {
-//        return "redirect:/login";
-//    }
+
+    @GetMapping
+    public String makeHi() {
+        return "redirect:/login";
+    }
 
     @GetMapping("/user")
     public String getUserPage() {

@@ -34,7 +34,8 @@ export const createNewUserForm = (user, updateUserListCallback) => {
 const createRolesSelect = (prefix, roles) => {
     const select = $(`<select class="form-select" size="${roles.length}" multiple aria-label="roles" name="roles[]" id="${prefix}Roles"></select>`);
     roles.forEach(role => {
-        const option = $(`<option value="${role}">${role}</option>`);
+        const roleValue = `ROLE_${role}`;
+        const option = $(`<option value="${roleValue}">${roleValue}</option>`);
         select.append(option);
     });
     return select;

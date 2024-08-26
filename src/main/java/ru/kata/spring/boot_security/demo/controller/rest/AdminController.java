@@ -19,18 +19,14 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/v1/users")
 public class AdminController {
     private final UserService userService;
-//    private final RoleService roleService;
-//    private final PasswordEncoder passwordEncoder;
     private final UserConverter userConverter;
 
-    public AdminController(UserService userService, /*RoleService roleService, PasswordEncoder passwordEncoder,*/ UserConverter userConverter) {
+    public AdminController(UserService userService, UserConverter userConverter) {
         this.userService = userService;
-//        this.roleService = roleService;
-//        this.passwordEncoder = passwordEncoder;
         this.userConverter = userConverter;
     }
 

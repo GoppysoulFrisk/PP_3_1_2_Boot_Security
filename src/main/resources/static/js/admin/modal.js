@@ -53,7 +53,8 @@ const createUserForm = (user, modalId, isDisabled) => {
 const createRolesSelect = (modalId, roles, value, isDisabled) => {
     const select = $(`<select class="form-select" size="${roles.length}" multiple aria-label="roles" name="roles[]" id="${modalId}Roles" ${isDisabled ? 'disabled' : ''}></select>`);
     roles.forEach(role => {
-        const option = $(`<option value="${role}">${role}</option>`);
+        const roleValue = `ROLE_${role}`;
+        const option = $(`<option value="${roleValue}">${roleValue}</option>`);
         if (value.includes(role)) option.attr("selected", true);
         select.append(option);
     });
@@ -67,6 +68,8 @@ const createTextInput = (modalId, key, value, isDisabled) => {
 };
 
 const handleEditUser = (form, modalId, updateUserListCallback) => {
+    const formData = objectifyForm(form.serializeArray());
+    console.log(formData);
     updateUser(objectifyForm(form.serializeArray()))
         .done(result => {
             console.log("PUT success");

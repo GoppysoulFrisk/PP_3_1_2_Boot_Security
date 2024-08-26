@@ -12,7 +12,15 @@ const createUserRow = (user, openUserModal) => {
     const row = $(`<tr></tr>`).attr('data-id', user.id);
     const columns = Object.entries(user)
         .filter(([key]) => key !== 'password')
-        .map(([, value]) => $('<td></td>').text(value));
+        .map(([key, value]) => {
+            if (key === 'roles') {
+                // Если ключ 'roles', обрезаем 'ROLE_' и объединяем их в строку
+                const rolesWithoutPrefix = value.map(role => role.replace('ROLE_', '')).join(', ');
+                return $('<td></td>').text(rolesWithoutPrefix);
+            } else {
+                return $('<td></td>').text(value);
+            }
+        });
 
     const editButton = createButton('Edit', 'btn-info', () => openUserModal(user, 'edit'));
     const deleteButton = createButton('Delete', 'btn-danger', () => openUserModal(user, 'delete'));

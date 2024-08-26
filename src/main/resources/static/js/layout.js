@@ -1,7 +1,7 @@
 $.get('http://localhost:8080/api/v1/user', (user) => {
     console.log(`GET /user in populateLayout to populate header and sidebar`)
     $('#headerUsername').text(user.username);
-    $('#headerRoles').text(user.roles);
+    $('#headerRoles').text(Array.from(user.roles).map(role => role.replace('ROLE_', '')).join(', '));
 
     const path = $(location).attr("pathname");
 
@@ -16,7 +16,7 @@ $.get('http://localhost:8080/api/v1/user', (user) => {
 
     $('#sidebarNav').append(userLink);
 
-    if (user.roles.includes('ADMIN')) {
+    if (user.roles.includes('ROLE_ADMIN')) {
         $('#sidebarNav').append(adminLink);
     }
 });
