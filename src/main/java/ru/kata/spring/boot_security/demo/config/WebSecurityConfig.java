@@ -38,18 +38,18 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder(5);
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable/*csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()/*/)
-//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/test","/static/**", "/js/**", "/css/**").permitAll()
-                        .requestMatchers("/api/v1/user").authenticated()
-                        .requestMatchers("/admin/**").hasRole("ADMIN"))
-                .formLogin(form -> form.usernameParameter("username").successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
-                .httpBasic(Customizer.withDefaults())
-                .build();
-    }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(AbstractHttpConfigurer::disable/*csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()/*/)
+////                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+//                .authorizeHttpRequests(authz -> authz
+//                        .requestMatchers("/", "/test","/static/**", "/js/**", "/css/**").permitAll()
+//                        .requestMatchers("/api/v1/user").authenticated()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN"))
+//                .formLogin(form -> form.usernameParameter("username").successHandler(new SuccessUserHandler()).permitAll())// Установка кастомного обработчика
+//                .httpBasic(Customizer.withDefaults())
+//                .build();
+//    }
 
 }
