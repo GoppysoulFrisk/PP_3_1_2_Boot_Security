@@ -44,16 +44,7 @@ public class AdminController {
 
     @PostMapping()
     public String addUser(@ModelAttribute("user") User user, @RequestParam(value = "roleIds", required = false) Set<Long> roleIds) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        Set<Role> roles = new HashSet<>();
-//        for (Long roleId : roleIds) {
-//            Role role = roleService.findById(roleId);
-//            if (role != null) {
-//                roles.add(role);
-//            }
-//        }
-        user.setRoles(roleIds.stream().map(roleService::findById).collect(Collectors.toSet()));
-        userService.save(user);
+        userService.save(user, roleIds);
         return "redirect:/admin";
     }
 
@@ -72,13 +63,7 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User newUserDetails, @RequestParam(value = "roleIds", required = false) Set<Long> roleIds) {
-        User user = userService.findById(newUserDetails.getId());
-        user.setRoles(roleIds.stream().map(roleService::findById).collect(Collectors.toSet()));
-        user.setUsername(newUserDetails.getUsername());
-        user.setPassword(passwordEncoder.encode(newUserDetails.getPassword()));
-        user.setEmail(newUserDetails.getEmail());
-        user.setPhone(newUserDetails.getPhone());
-        userService.update(user);
+        userService.update(newUserDetails, roleIds);
         return "redirect:/admin";
     }
 }

@@ -5,12 +5,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.exception.RoleNotFoundException;
-import ru.kata.spring.boot_security.demo.service.RoleService;
-import ru.kata.spring.boot_security.demo.service.UserService;
-import ru.kata.spring.boot_security.demo.exception.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -21,37 +19,31 @@ public class SetupDataLoader implements
 
     private boolean alreadySetup = false;
 
-    private final RoleService roleService;
+    private final RoleRepository roleRepository;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public SetupDataLoader(RoleService roleService, UserService userService, PasswordEncoder passwordEncoder) {
-        this.roleService = roleService;
-        this.userService = userService;
+    public SetupDataLoader(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public Role createRoleIfNotFound(String roleStr) {
-        try {
-            Role role = roleService.findByName(roleStr);
-            return role;
-        } catch (RoleNotFoundException e) {
+        return roleRepository.findByName(roleStr).orElseGet(() -> {
             Role newRole = new Role();
             newRole.setName(roleStr);
-            roleService.save(newRole);
+            roleRepository.save(newRole);
             return newRole;
-        }
+        });
     }
 
     @Transactional
     public User createUserIfNotFound(String userStr, List<Role> roles) {
-        try {
-            User user = userService.findByUsername(userStr);
-            return user;
-        } catch (UserNotFoundException e) {
+        return userRepository.getUserByUsername(userStr).orElseGet(() -> {
             User newUser = new User(userStr);
             newUser.setPassword(passwordEncoder.encode(userStr));
             if (userStr.equals("admin")) {
@@ -61,7 +53,7 @@ public class SetupDataLoader implements
                 newUser.addRole(roles.get(1));
             }
             return newUser;
-        }
+        });
     }
 
     @Transactional
@@ -75,7 +67,7 @@ public class SetupDataLoader implements
         List<Role> roles = Stream.of("ROLE_ADMIN", "ROLE_USER").map(this::createRoleIfNotFound).toList();
         List<User> users = Stream.of("admin", "user").map(userStr -> createUserIfNotFound(userStr, roles)).toList();
 
-        userService.saveAll(users);
+        userRepository.saveAll(users);
 
         alreadySetup = true;
     }

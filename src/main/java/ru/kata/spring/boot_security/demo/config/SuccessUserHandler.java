@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.config;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -13,18 +12,20 @@ import java.util.Set;
 
 @Component
 public class SuccessUserHandler implements AuthenticationSuccessHandler {
-    // Spring Security использует объект Authentication, пользователя авторизованной сессии.
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication)
-                                        throws IOException, ServletException {
+                                        throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+
         if (roles.contains("ROLE_ADMIN")) {
             response.sendRedirect("/admin");
-        } else {
+        } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user");
+        } else {
+            response.sendRedirect("/");
         }
     }
 }

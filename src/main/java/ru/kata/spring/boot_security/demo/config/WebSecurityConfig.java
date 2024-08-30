@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.security.UserDetailServiceImpl;
 
 
@@ -19,14 +20,14 @@ import ru.kata.spring.boot_security.demo.security.UserDetailServiceImpl;
 public class WebSecurityConfig {
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailServiceImpl();
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new UserDetailServiceImpl(userRepository);
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(UserRepository userRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService(userRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -39,13 +40,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable/*csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()/*/)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/test").permitAll()
-                        .requestMatchers("user/**").authenticated()
-                        .requestMatchers("/admin/**").hasRole("ADMIN"))
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .formLogin(form -> form.successHandler(new SuccessUserHandler())
-                        .permitAll())// Установка кастомного обработчика
+                        .permitAll())
                 .build();
     }
 
