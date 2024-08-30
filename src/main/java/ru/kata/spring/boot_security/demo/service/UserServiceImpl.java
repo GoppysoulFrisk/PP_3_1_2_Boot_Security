@@ -33,11 +33,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveAll(List<User> users) {
-        userRepository.saveAll(users);
-    }
-
-    @Override
     public void update(User updatedUser) {
         userRepository.save(updatedUser);
     }

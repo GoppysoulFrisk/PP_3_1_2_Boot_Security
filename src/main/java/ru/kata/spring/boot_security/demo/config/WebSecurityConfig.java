@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.security.UserDetailServiceImpl;
 
 
@@ -26,14 +27,14 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailServiceImpl();
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new UserDetailServiceImpl(userRepository);
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(UserRepository userRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService(userRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -52,8 +53,8 @@ public class WebSecurityConfig {
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/users/*").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/v1/user").authenticated()
+                        .requestMatchers("/api/v1/users/*").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/user").hasRole("USER")
                         .requestMatchers("/api/v1").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())

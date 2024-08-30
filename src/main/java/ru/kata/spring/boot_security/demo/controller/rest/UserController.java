@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
     private final UserConverter userConverter;
 
-    public UserController(UserService userService /*UserErrorResponse userErrorResponse*/, UserConverter userConverter) {
+    public UserController(UserService userService, UserConverter userConverter) {
         this.userService = userService;
         this.userConverter = userConverter;
     }
