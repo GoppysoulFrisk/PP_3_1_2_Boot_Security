@@ -25,9 +25,7 @@ public class UserController {
     public UserDTO userPage(Model model, Principal principal) {
         String username = principal.getName();
         User user = userService.findByUsername(username);
-        System.out.println(user);
         UserDTO dto = userConverter.convertToDTO(user);
-        System.out.println(dto);
         return dto;
     }
 

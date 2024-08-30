@@ -53,9 +53,8 @@ public class AdminController {
 
     @PutMapping
     public UserDTO updateUser(@RequestBody UserDTO userDTO) {
-        User user = userConverter.convertToEntity(userDTO);
-        userService.update(user);
-        return userConverter.convertToDTO(user);
+        User updatedUser = userService.update(userConverter.convertToEntity(userDTO));
+        return userConverter.convertToDTO(updatedUser);
     }
 
 }
