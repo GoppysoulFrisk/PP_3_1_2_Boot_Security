@@ -32,7 +32,6 @@ public class UserConverter {
         return userDTO;
     }
 
-    //todo
     public User convertToEntity(UserDTO dto) {
         User user = new User();
         if (dto.getId() != null) {
@@ -41,7 +40,7 @@ public class UserConverter {
         if (dto.getUsername() != null) {
             user.setUsername(dto.getUsername());
         }
-        if (dto.getPassword() != null) {
+        if (dto.getPassword() != null && !dto.getPassword().equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
         if (dto.getEmail() != null) {
